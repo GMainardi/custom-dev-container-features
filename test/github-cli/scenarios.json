@@ -1,0 +1,34 @@
+{
+    "github-cli-default": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "github-cli": {
+                "version": "latest"
+            }
+        }
+    },
+    "github-cli-alpine": {
+        "image": "alpine:latest",
+        "features": {
+            "github-cli": {
+                "version": "latest"
+            }
+        }
+    },
+    "github-cli-debian": {
+        "image": "debian:latest",
+        "features": {
+            "github-cli": {
+                "version": "latest"
+            }
+        }
+    },
+    "github-cli-ssh-config": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "github-cli": {
+                "authSsh": true
+            }
+        }
+    }
+}
