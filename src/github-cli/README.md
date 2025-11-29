@@ -19,6 +19,7 @@ Installs the GitHub CLI
 | authSsh | Configure the GitHub CLI to use SSH protocol for git operations. | boolean | false |
 | installGit | Install git if not already present. | boolean | true |
 | configureGit | Configure git user.name and user.email if not set. | boolean | true |
+| install1PasswordCli | Install the 1Password CLI (op) to support 1Password integration. | boolean | false |
 
 
 
