@@ -1,12 +1,12 @@
 {
-    "color_and_hello": {
+    "gcloud_and_github": {
         "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
-            "color": {
-                "favorite": "purple"
+            "gcloud-cli": {
+                "projectId": "global-test-project"
             },
-            "hello": {
-                "greeting": "Greetings"
+            "github-cli": {
+                "version": "latest"
             }
         }
     }

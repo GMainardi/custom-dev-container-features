@@ -5,6 +5,8 @@ echo "Activating feature 'github-cli'"
 
 VERSION=${VERSION:-"latest"}
 AUTH_SSH=${AUTHSSH:-"false"}
+INSTALL_GIT=${INSTALLGIT:-"true"}
+CONFIGURE_GIT=${CONFIGUREGIT:-"true"}
 
 # Helper to install dependencies based on package manager
 install_dependencies() {
@@ -101,14 +103,15 @@ cleanup() {
 
 install_ssh_client() {
     # However, we can install `openssh-client` (ssh) to ensure the agent can be used.
+    # We also install socat as it is often required for complex SSH agent forwarding setups (like 1Password).
     if command -v apt-get >/dev/null 2>&1; then
-        apt-get install -y openssh-client
+        apt-get install -y openssh-client socat
     elif command -v apk >/dev/null 2>&1; then
-        apk add --no-cache openssh-client
+        apk add --no-cache openssh-client socat
     elif command -v dnf >/dev/null 2>&1; then
-        dnf install -y openssh-clients
+        dnf install -y openssh-clients socat
     elif command -v yum >/dev/null 2>&1; then
-        yum install -y openssh-clients
+        yum install -y openssh-clients socat
     fi
 
     # Configure gh to use ssh protocol if requested
@@ -148,10 +151,100 @@ EOF
     fi
 }
 
+install_git() {
+    if [ "$INSTALL_GIT" = "false" ]; then
+        echo "Skipping git installation as requested."
+    else
+        if command -v git >/dev/null 2>&1; then
+            echo "git is already installed."
+        else
+            echo "Installing git..."
+            if command -v apt-get >/dev/null 2>&1; then
+                apt-get install -y git
+            elif command -v apk >/dev/null 2>&1; then
+                apk add --no-cache git
+            elif command -v dnf >/dev/null 2>&1; then
+                dnf install -y git
+            elif command -v yum >/dev/null 2>&1; then
+                yum install -y git
+            fi
+        fi
+    fi
+
+    if [ "$CONFIGURE_GIT" = "true" ]; then
+        echo "Configuring git user defaults..."
+        
+        cat << 'EOF' > /etc/profile.d/git-config-check.sh
+#!/bin/sh
+if command -v git >/dev/null 2>&1; then
+    # If we have access to the host's gitconfig via mount, we don't need to do much.
+    # VS Code automatically mounts ~/.gitconfig to /root/.gitconfig or /home/user/.gitconfig in many cases.
+    
+    # However, if we want to ensure certain settings are propagated from env vars:
+    if [ -z "$(git config --global user.name)" ] && [ -n "$GIT_AUTHOR_NAME" ]; then
+        git config --global user.name "$GIT_AUTHOR_NAME"
+    fi
+    if [ -z "$(git config --global user.email)" ] && [ -n "$GIT_AUTHOR_EMAIL" ]; then
+        git config --global user.email "$GIT_AUTHOR_EMAIL"
+    fi
+fi
+EOF
+        chmod 755 /etc/profile.d/git-config-check.sh
+    fi
+}
+
+install_op() {
+    if [ "$INSTALL_OP" = "false" ]; then
+        return 0
+    fi
+    
+    echo "Installing 1Password CLI (op)..."
+    
+    ARCH=$(uname -m)
+    case $ARCH in
+        x86_64) OP_ARCH="amd64" ;;
+        aarch64) OP_ARCH="arm64" ;;
+        *) echo "Unsupported architecture for 1Password CLI: ${ARCH}"; return 1 ;;
+    esac
+
+    if command -v apt-get >/dev/null 2>&1; then
+        # Debian/Ubuntu
+        # 1Password provides an apt repository
+        curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | tee /etc/apt/sources.list.d/1password.list
+        mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+        curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+        mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+        curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+        apt-get update && apt-get install -y 1password-cli
+    elif command -v apk >/dev/null 2>&1; then
+        # Alpine
+        # Download binary
+        # Check for libc6-compat which we installed in dependencies
+        OP_VERSION="v2.23.0" # Use a specific version or fetch latest
+        # Actually, let's try to fetch latest if possible, or stick to a recent stable to avoid breakage.
+        # For alpine, 1Password binaries are linked against glibc, so libc6-compat is needed (already installed).
+        wget "https://cache.agilebits.com/dist/1P/op2/pkg/${OP_VERSION}/op_linux_${OP_ARCH}_${OP_VERSION}.zip" -O op.zip
+        unzip op.zip
+        mv op /usr/local/bin/
+        rm op.zip
+    else
+        # RPM based or other
+        # For simplicity, use binary download for others as well if dnf/yum repo is complex
+        # But 1Password has yum repo too.
+        if command -v dnf >/dev/null 2>&1 || command -v yum >/dev/null 2>&1; then
+            rpm --import https://downloads.1password.com/linux/keys/1password.asc
+            sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
+            if command -v dnf >/dev/null 2>&1; then dnf install -y 1password-cli; else yum install -y 1password-cli; fi
+        fi
+    fi
+}
+
 install_dependencies
+install_git
 install_gh
 install_ssh_client
+install_op
 cleanup
 
 echo "Done!"
-

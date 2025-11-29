@@ -30,5 +30,29 @@
                 "authSsh": true
             }
         }
+    },
+    "github-cli-git-install": {
+        "image": "alpine:latest",
+        "features": {
+            "github-cli": {
+                "installGit": true
+            }
+        }
+    },
+    "github-cli-git-config": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "github-cli": {
+                "configureGit": true
+            }
+        }
+    },
+    "github-cli-op-install": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "github-cli": {
+                "install1PasswordCli": true
+            }
+        }
     }
 }
