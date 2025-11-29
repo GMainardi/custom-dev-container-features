@@ -1,7 +1,7 @@
 {
     "name": "GitHub CLI",
     "id": "github-cli",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Installs the GitHub CLI",
     "options": {
         "version": {
@@ -26,6 +26,11 @@
             "type": "boolean",
             "default": true,
             "description": "Configure git user.name and user.email if not set."
+        },
+        "install1PasswordCli": {
+            "type": "boolean",
+            "default": false,
+            "description": "Install the 1Password CLI (op) to support 1Password integration."
         }
     },
     "installsAfter": [
