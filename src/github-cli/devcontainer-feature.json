@@ -1,0 +1,24 @@
+{
+    "name": "GitHub CLI",
+    "id": "github-cli",
+    "version": "1.0.1",
+    "description": "Installs the GitHub CLI",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select version of GitHub CLI to install."
+        },
+        "authSsh": {
+            "type": "boolean",
+            "default": false,
+            "description": "Configure the GitHub CLI to use SSH protocol for git operations."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
