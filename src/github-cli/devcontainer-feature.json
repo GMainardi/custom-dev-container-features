@@ -1,7 +1,7 @@
 {
     "name": "GitHub CLI",
     "id": "github-cli",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Installs the GitHub CLI",
     "options": {
         "version": {
@@ -11,26 +11,6 @@
             ],
             "default": "latest",
             "description": "Select version of GitHub CLI to install."
-        },
-        "authSsh": {
-            "type": "boolean",
-            "default": false,
-            "description": "Configure the GitHub CLI to use SSH protocol for git operations."
-        },
-        "installGit": {
-            "type": "boolean",
-            "default": true,
-            "description": "Install git if not already present."
-        },
-        "configureGit": {
-            "type": "boolean",
-            "default": true,
-            "description": "Configure git user.name and user.email if not set."
-        },
-        "install1PasswordCli": {
-            "type": "boolean",
-            "default": false,
-            "description": "Install the 1Password CLI (op) to support 1Password integration."
         }
     },
     "installsAfter": [

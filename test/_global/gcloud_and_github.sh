@@ -20,7 +20,9 @@ check "gcloud version" gcloud --version
 check "gcloud project id" bash -c "echo $CLOUDSDK_CORE_PROJECT | grep 'global-test-project'"
 
 check "gh version" gh --version
+check "git version" git --version
+check "ssh client installed" command -v ssh
+check "socat installed" command -v socat
 
 # Report result
 reportResults
-
