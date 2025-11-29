@@ -10,7 +10,8 @@ Installs the GitHub CLI (gh)
         "version": "latest",
         "authSsh": true,
         "installGit": true,
-        "configureGit": true
+        "configureGit": true,
+        "install1PasswordCli": true
     }
 }
 ```
@@ -23,3 +24,4 @@ Installs the GitHub CLI (gh)
 | authSsh | Configure the GitHub CLI to use SSH protocol for git operations. | boolean | false |
 | installGit | Install git if not already present. | boolean | true |
 | configureGit | Configure git user.name and user.email if not set (attempts to use env vars). | boolean | false |
+| install1PasswordCli | Install the 1Password CLI (op) to support 1Password integration. | boolean | false |
