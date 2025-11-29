@@ -15,11 +15,13 @@
         "projectId": {
             "type": "string",
             "proposals": [],
+            "default": "",
             "description": "The Google Cloud project ID to set as default."
         },
         "quotaProjectId": {
             "type": "string",
             "proposals": [],
+            "default": "",
             "description": "The Google Cloud project ID to set as the quota project."
         }
     },
