@@ -17,6 +17,8 @@ Installs the GitHub CLI
 |-----|-----|-----|-----|
 | version | Select version of GitHub CLI to install. | string | latest |
 | authSsh | Configure the GitHub CLI to use SSH protocol for git operations. | boolean | false |
+| installGit | Install git if not already present. | boolean | true |
+| configureGit | Configure git user.name and user.email if not set. | boolean | true |
 
 
 
