@@ -5,6 +5,8 @@ echo "Activating feature 'github-cli'"
 
 VERSION=${VERSION:-"latest"}
 AUTH_SSH=${AUTHSSH:-"false"}
+INSTALL_GIT=${INSTALLGIT:-"true"}
+CONFIGURE_GIT=${CONFIGUREGIT:-"true"}
 
 # Helper to install dependencies based on package manager
 install_dependencies() {
@@ -148,10 +150,52 @@ EOF
     fi
 }
 
+install_git() {
+    if [ "$INSTALL_GIT" = "false" ]; then
+        echo "Skipping git installation as requested."
+    else
+        if command -v git >/dev/null 2>&1; then
+            echo "git is already installed."
+        else
+            echo "Installing git..."
+            if command -v apt-get >/dev/null 2>&1; then
+                apt-get install -y git
+            elif command -v apk >/dev/null 2>&1; then
+                apk add --no-cache git
+            elif command -v dnf >/dev/null 2>&1; then
+                dnf install -y git
+            elif command -v yum >/dev/null 2>&1; then
+                yum install -y git
+            fi
+        fi
+    fi
+
+    if [ "$CONFIGURE_GIT" = "true" ]; then
+        echo "Configuring git user defaults..."
+        
+        cat << 'EOF' > /etc/profile.d/git-config-check.sh
+#!/bin/sh
+if command -v git >/dev/null 2>&1; then
+    # If we have access to the host's gitconfig via mount, we don't need to do much.
+    # VS Code automatically mounts ~/.gitconfig to /root/.gitconfig or /home/user/.gitconfig in many cases.
+    
+    # However, if we want to ensure certain settings are propagated from env vars:
+    if [ -z "$(git config --global user.name)" ] && [ -n "$GIT_AUTHOR_NAME" ]; then
+        git config --global user.name "$GIT_AUTHOR_NAME"
+    fi
+    if [ -z "$(git config --global user.email)" ] && [ -n "$GIT_AUTHOR_EMAIL" ]; then
+        git config --global user.email "$GIT_AUTHOR_EMAIL"
+    fi
+fi
+EOF
+        chmod 755 /etc/profile.d/git-config-check.sh
+    fi
+}
+
 install_dependencies
+install_git
 install_gh
 install_ssh_client
 cleanup
 
 echo "Done!"
-

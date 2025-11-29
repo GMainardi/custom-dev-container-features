@@ -1,7 +1,7 @@
 {
     "name": "GitHub CLI",
     "id": "github-cli",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "Installs the GitHub CLI",
     "options": {
         "version": {
@@ -16,6 +16,16 @@
             "type": "boolean",
             "default": false,
             "description": "Configure the GitHub CLI to use SSH protocol for git operations."
+        },
+        "installGit": {
+            "type": "boolean",
+            "default": true,
+            "description": "Install git if not already present."
+        },
+        "configureGit": {
+            "type": "boolean",
+            "default": true,
+            "description": "Configure git user.name and user.email if not set."
         }
     },
     "installsAfter": [
