@@ -1,15 +1,13 @@
+
 # GitHub CLI (github-cli)
 
-Installs the GitHub CLI (gh)
+Installs the GitHub CLI
 
 ## Example Usage
 
 ```json
 "features": {
-    "ghcr.io/guidomainardi/custom-dev-container-features/github-cli:1": {
-        "version": "latest",
-        "authSsh": true
-    }
+    "ghcr.io/GMainardi/custom-dev-container-features/github-cli:1": {}
 }
 ```
 
@@ -19,3 +17,9 @@ Installs the GitHub CLI (gh)
 |-----|-----|-----|-----|
 | version | Select version of GitHub CLI to install. | string | latest |
 | authSsh | Configure the GitHub CLI to use SSH protocol for git operations. | boolean | false |
+
+
+
+---
+
+_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/GMainardi/custom-dev-container-features/blob/main/src/github-cli/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
