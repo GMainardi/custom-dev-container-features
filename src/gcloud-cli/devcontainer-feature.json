@@ -1,0 +1,29 @@
+{
+    "name": "Google Cloud CLI",
+    "id": "gcloud-cli",
+    "version": "1.0.2",
+    "description": "Installs the Google Cloud CLI",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select version of gcloud cli to install."
+        },
+        "projectId": {
+            "type": "string",
+            "proposals": [],
+            "description": "The Google Cloud project ID to set as default."
+        },
+        "quotaProjectId": {
+            "type": "string",
+            "proposals": [],
+            "description": "The Google Cloud project ID to set as the quota project."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
