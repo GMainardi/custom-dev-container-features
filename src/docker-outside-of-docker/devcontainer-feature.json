@@ -1,0 +1,27 @@
+{
+    "name": "Docker Outside of Docker (DooD)",
+    "id": "docker-outside-of-docker",
+    "version": "1.0.0",
+    "description": "Re-use the host's Docker socket to run Docker commands inside the container.",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select version of Docker CLI to install."
+        }
+    },
+    "mounts": [
+        {
+            "source": "/var/run/docker.sock",
+            "target": "/var/run/docker.sock",
+            "type": "bind"
+        }
+    ],
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
+
