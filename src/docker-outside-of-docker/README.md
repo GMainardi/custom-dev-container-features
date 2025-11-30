@@ -1,4 +1,5 @@
-# Docker Outside of Docker (DooD)
+
+# Docker Outside of Docker (DooD) (docker-outside-of-docker)
 
 Re-use the host's Docker socket to run Docker commands inside the container.
 
@@ -6,9 +7,7 @@ Re-use the host's Docker socket to run Docker commands inside the container.
 
 ```json
 "features": {
-    "ghcr.io/guidomainardi/custom-dev-container-features/docker-outside-of-docker:1": {
-        "version": "latest"
-    }
+    "ghcr.io/GMainardi/custom-dev-container-features/docker-outside-of-docker:1": {}
 }
 ```
 
@@ -18,9 +17,8 @@ Re-use the host's Docker socket to run Docker commands inside the container.
 |-----|-----|-----|-----|
 | version | Select version of Docker CLI to install. | string | latest |
 
-## Notes
 
-This feature installs the Docker CLI and configures the container to use the host's Docker socket. It requires the container to be run with the Docker socket mounted.
 
-The feature automatically adds a mount configuration to `devcontainer-feature.json` to bind mount `/var/run/docker.sock`.
+---
 
+_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/GMainardi/custom-dev-container-features/blob/main/src/docker-outside-of-docker/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
