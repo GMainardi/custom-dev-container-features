@@ -1,0 +1,35 @@
+{
+    "poetry-default": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
+    },
+    "poetry-alpine": {
+        "image": "alpine:latest",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
+    },
+    "poetry-debian": {
+        "image": "debian:latest",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
+    },
+    "poetry-specific-version": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "poetry": {
+                "version": "1.7.1"
+            }
+        }
+    }
+}
+

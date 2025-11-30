@@ -1,0 +1,20 @@
+{
+    "name": "Poetry",
+    "id": "poetry",
+    "version": "1.0.0",
+    "description": "Installs Poetry, a tool for dependency management and packaging in Python.",
+    "options": {
+        "version": {
+            "type": "string",
+            "proposals": [
+                "latest"
+            ],
+            "default": "latest",
+            "description": "Select version of Poetry to install."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/python"
+    ]
+}
+
