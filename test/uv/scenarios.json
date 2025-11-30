@@ -1,0 +1,27 @@
+{
+    "uv-default": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "uv": {
+                "version": "latest"
+            }
+        }
+    },
+    "uv-alpine": {
+        "image": "alpine:latest",
+        "features": {
+            "uv": {
+                "version": "latest"
+            }
+        }
+    },
+    "uv-debian": {
+        "image": "debian:latest",
+        "features": {
+            "uv": {
+                "version": "latest"
+            }
+        }
+    }
+}
+
