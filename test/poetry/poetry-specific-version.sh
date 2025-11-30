@@ -3,8 +3,6 @@ set -e
 
 source dev-container-features-test-lib
 
-check "gh version" gh --version
-check "git version" git --version
+check "poetry version" poetry --version | grep "1.7.1"
 
 reportResults
-

@@ -1,26 +1,35 @@
 {
-    "github-cli-default": {
+    "poetry-default": {
         "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
         "features": {
-            "github-cli": {
+            "poetry": {
                 "version": "latest"
             }
         }
     },
-    "github-cli-alpine": {
+    "poetry-alpine": {
         "image": "alpine:latest",
         "features": {
-            "github-cli": {
+            "poetry": {
                 "version": "latest"
             }
         }
     },
-    "github-cli-debian": {
+    "poetry-debian": {
         "image": "debian:latest",
         "features": {
-            "github-cli": {
+            "poetry": {
                 "version": "latest"
+            }
+        }
+    },
+    "poetry-specific-version": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "poetry": {
+                "version": "1.7.1"
             }
         }
     }
 }
+
