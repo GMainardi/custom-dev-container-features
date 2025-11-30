@@ -1,0 +1,27 @@
+{
+    "docker-default": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    },
+    "docker-alpine": {
+        "image": "alpine:latest",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    },
+    "docker-debian": {
+        "image": "debian:latest",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    }
+}
+
