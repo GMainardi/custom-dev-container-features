@@ -4,50 +4,78 @@
 >
 > To provide feedback to the specification, please leave a comment [on spec issue #70](https://github.com/devcontainers/spec/issues/70). For more broad feedback regarding dev container Features, please see [spec issue #61](https://github.com/devcontainers/spec/issues/61).
 
-## Example Contents
+## Available Features
 
-This repository contains a _collection_ of two Features - `hello` and `color`. These Features serve as simple feature implementations.  Each sub-section below shows a sample `devcontainer.json` alongside example usage of the Feature.
+This repository contains the following Features:
 
-### `hello`
+### `docker-outside-of-docker`
 
-Running `hello` inside the built container will print the greeting provided to it via its `greeting` option.
+Re-use the host's Docker socket to run Docker commands inside the container.
 
 ```jsonc
 {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-        "ghcr.io/devcontainers/feature-starter/hello:1": {
-            "greeting": "Hello"
+        "ghcr.io/guidomainardi/custom-dev-container-features/docker-outside-of-docker:1": {
+            "version": "latest"
         }
     }
 }
 ```
 
-```bash
-$ hello
+### `gcloud-cli`
 
-Hello, user.
-```
-
-### `color`
-
-Running `color` inside the built container will print your favorite color to standard out.
+Installs the Google Cloud CLI.
 
 ```jsonc
 {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-        "ghcr.io/devcontainers/feature-starter/color:1": {
-            "favorite": "green"
+        "ghcr.io/guidomainardi/custom-dev-container-features/gcloud-cli:1": {
+            "version": "latest"
         }
     }
 }
 ```
 
-```bash
-$ color
+### `github-cli`
 
-my favorite color is green
+Installs the GitHub CLI.
+
+```jsonc
+{
+    "features": {
+        "ghcr.io/guidomainardi/custom-dev-container-features/github-cli:1": {
+            "version": "latest"
+        }
+    }
+}
+```
+
+### `poetry`
+
+Installs Poetry, a tool for dependency management and packaging in Python.
+
+```jsonc
+{
+    "features": {
+        "ghcr.io/guidomainardi/custom-dev-container-features/poetry:1": {
+            "version": "latest"
+        }
+    }
+}
+```
+
+### `uv`
+
+Installs uv, an extremely fast Python package installer and resolver.
+
+```jsonc
+{
+    "features": {
+        "ghcr.io/guidomainardi/custom-dev-container-features/uv:1": {
+            "version": "latest"
+        }
+    }
+}
 ```
 
 ## Repo and Feature Structure
@@ -56,16 +84,21 @@ Similar to the [`devcontainers/features`](https://github.com/devcontainers/featu
 
 ```
 ├── src
-│   ├── hello
+│   ├── docker-outside-of-docker
 │   │   ├── devcontainer-feature.json
 │   │   └── install.sh
-│   ├── color
+│   ├── gcloud-cli
 │   │   ├── devcontainer-feature.json
 │   │   └── install.sh
-|   ├── ...
+│   ├── github-cli
 │   │   ├── devcontainer-feature.json
 │   │   └── install.sh
-...
+│   ├── poetry
+│   │   ├── devcontainer-feature.json
+│   │   └── install.sh
+│   └── uv
+│       ├── devcontainer-feature.json
+│       └── install.sh
 ```
 
 An [implementing tool](https://containers.dev/supporting#tools) will composite [the documented dev container properties](https://containers.dev/implementors/features/#devcontainer-feature-json-properties) from the feature's `devcontainer-feature.json` file, and execute in the `install.sh` entrypoint script in the container during build time.  Implementing tools are also free to process attributes under the `customizations` property as desired.
@@ -74,21 +107,17 @@ An [implementing tool](https://containers.dev/supporting#tools) will composite [
 
 All available options for a Feature should be declared in the `devcontainer-feature.json`.  The syntax for the `options` property can be found in the [devcontainer Feature json properties reference](https://containers.dev/implementors/features/#devcontainer-feature-json-properties).
 
-For example, the `color` feature provides an enum of three possible options (`red`, `gold`, `green`).  If no option is provided in a user's `devcontainer.json`, the value is set to "red".
+For example, the `gcloud-cli` feature provides an option to set the default project ID.
 
 ```jsonc
 {
     // ...
     "options": {
-        "favorite": {
+        "projectId": {
             "type": "string",
-            "enum": [
-                "red",
-                "gold",
-                "green"
-            ],
-            "default": "red",
-            "description": "Choose your favorite color."
+            "proposals": [],
+            "default": "",
+            "description": "The Google Cloud project ID to set as default."
         }
     }
 }
@@ -99,8 +128,8 @@ Options are exported as Feature-scoped environment variables.  The option name i
 ```bash
 #!/bin/bash
 
-echo "Activating feature 'color'"
-echo "The provided favorite color is: ${FAVORITE}"
+echo "Activating feature 'gcloud-cli'"
+echo "The provided project ID is: ${PROJECTID}"
 
 ...
 ```
@@ -123,16 +152,19 @@ This repo contains a **GitHub Action** [workflow](.github/workflows/release.yaml
 
 *Allow GitHub Actions to create and approve pull requests* should be enabled in the repository's `Settings > Actions > General > Workflow permissions` for auto generation of `src/<feature>/README.md` per Feature (which merges any existing `src/<feature>/NOTES.md`).
 
-By default, each Feature will be prefixed with the `<owner/<repo>` namespace.  For example, the two Features in this repository can be referenced in a `devcontainer.json` with:
+By default, each Feature will be prefixed with the `<owner/<repo>` namespace.  For example, the Features in this repository can be referenced in a `devcontainer.json` with:
 
 ```
-ghcr.io/devcontainers/feature-starter/color:1
-ghcr.io/devcontainers/feature-starter/hello:1
+ghcr.io/guidomainardi/custom-dev-container-features/docker-outside-of-docker:1
+ghcr.io/guidomainardi/custom-dev-container-features/gcloud-cli:1
+ghcr.io/guidomainardi/custom-dev-container-features/github-cli:1
+ghcr.io/guidomainardi/custom-dev-container-features/poetry:1
+ghcr.io/guidomainardi/custom-dev-container-features/uv:1
 ```
 
-The provided GitHub Action will also publish a third "metadata" package with just the namespace, eg: `ghcr.io/devcontainers/feature-starter`.  This contains information useful for tools aiding in Feature discovery.
+The provided GitHub Action will also publish a third "metadata" package with just the namespace, eg: `ghcr.io/guidomainardi/custom-dev-container-features`.  This contains information useful for tools aiding in Feature discovery.
 
-'`devcontainers/feature-starter`' is known as the feature collection namespace.
+'`guidomainardi/custom-dev-container-features`' is known as the feature collection namespace.
 
 ### Marking Feature Public
 
@@ -168,14 +200,14 @@ An example `devcontainer.json` can be found below.
 {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-     "ghcr.io/my-org/private-features/hello:1": {
-            "greeting": "Hello"
+     "ghcr.io/guidomainardi/custom-dev-container-features/gcloud-cli:1": {
+            "version": "latest"
         }
     },
     "customizations": {
         "codespaces": {
             "repositories": {
-                "my-org/private-features": {
+                "guidomainardi/custom-dev-container-features": {
                     "permissions": {
                         "packages": "read",
                         "contents": "read"
