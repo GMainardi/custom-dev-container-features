@@ -1,8 +1,10 @@
 {
     "name": "Poetry",
     "id": "poetry",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Installs Poetry, a tool for dependency management and packaging in Python.",
+    "containerEnv": {},
+    "platforms": ["linux/amd64", "linux/arm64"],
     "options": {
         "version": {
             "type": "string",

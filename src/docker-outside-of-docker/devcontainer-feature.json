@@ -1,8 +1,10 @@
 {
     "name": "Docker Outside of Docker (DooD)",
     "id": "docker-outside-of-docker",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Re-use the host's Docker socket to run Docker commands inside the container.",
+    "containerEnv": {},
+    "platforms": ["linux/amd64", "linux/arm64"],
     "options": {
         "version": {
             "type": "string",

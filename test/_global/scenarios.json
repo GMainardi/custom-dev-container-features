@@ -9,5 +9,17 @@
                 "version": "latest"
             }
         }
+    },
+    "gcloud_and_github_arm64": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "platform": "linux/arm64",
+        "features": {
+            "gcloud-cli": {
+                "projectId": "global-test-project"
+            },
+            "github-cli": {
+                "version": "latest"
+            }
+        }
     }
 }

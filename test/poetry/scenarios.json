@@ -16,7 +16,7 @@
         }
     },
     "poetry-debian": {
-        "image": "debian:latest",
+        "image": "debian:bookworm",
         "features": {
             "poetry": {
                 "version": "latest"
@@ -30,6 +30,32 @@
                 "version": "1.7.1"
             }
         }
+    },
+    "poetry-default-arm64": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "platform": "linux/arm64",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
+    },
+    "poetry-alpine-arm64": {
+        "image": "alpine:latest",
+        "platform": "linux/arm64",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
+    },
+    "poetry-debian-arm64": {
+        "image": "debian:bookworm",
+        "platform": "linux/arm64",
+        "features": {
+            "poetry": {
+                "version": "latest"
+            }
+        }
     }
 }
-

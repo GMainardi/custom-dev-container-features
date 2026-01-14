@@ -1,8 +1,10 @@
 {
     "name": "GitHub CLI",
     "id": "github-cli",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Installs the GitHub CLI",
+    "containerEnv": {},
+    "platforms": ["linux/amd64", "linux/arm64"],
     "options": {
         "version": {
             "type": "string",

@@ -1,8 +1,10 @@
 {
     "name": "uv",
     "id": "uv",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Installs uv, an extremely fast Python package installer and resolver.",
+    "containerEnv": {},
+    "platforms": ["linux/amd64", "linux/arm64"],
     "options": {
         "version": {
             "type": "string",

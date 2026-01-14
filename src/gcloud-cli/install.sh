@@ -10,9 +10,11 @@ QUOTA_PROJECT_ID=${QUOTAPROJECTID:-""}
 # Helper to install dependencies based on package manager
 install_dependencies() {
     if command -v apt-get >/dev/null 2>&1; then
-        # Debian/Ubuntu
-        # We don't need to do anything here as we use native apt installation for gcloud
-        return 0
+        # Debian/Ubuntu - install dependencies for tarball installation
+        echo "Installing dependencies for Debian/Ubuntu..."
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update || true
+        apt-get install -y --no-install-recommends python3 curl ca-certificates tar
     elif command -v apk >/dev/null 2>&1; then
         # Alpine
         echo "Installing dependencies for Alpine..."
@@ -42,29 +44,30 @@ install_via_apt() {
     rm -rf /var/lib/apt/lists/*
 
     # Install dependencies
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates gnupg curl lsb-release
+    apt-get update || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
+    apt-get install -y apt-transport-https ca-certificates gnupg curl lsb-release || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
 
     # Import the Google Cloud public key
     # Use a temporary keyring location to avoid permission issues or conflicts
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
 
     # Add the gcloud CLI distribution URI as a package source
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
     # Update and install the gcloud CLI
-    apt-get update
+    apt-get update || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
 
     if [ "$VERSION" = "latest" ]; then
         echo "Installing latest version of google-cloud-cli..."
-        apt-get install -y google-cloud-cli
+        apt-get install -y google-cloud-cli || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
     else
         echo "Installing version ${VERSION} of google-cloud-cli..."
-        apt-get install -y "google-cloud-cli=${VERSION}-*" || apt-get install -y "google-cloud-cli=${VERSION}"
+        apt-get install -y "google-cloud-cli=${VERSION}-*" || apt-get install -y "google-cloud-cli=${VERSION}" || { rm -f /etc/apt/apt.conf.d/99custom; return 1; }
     fi
     
     # Clean up
     rm -f /etc/apt/apt.conf.d/99custom
+    return 0
 }
 
 install_via_tarball() {
@@ -130,8 +133,16 @@ cleanup() {
 }
 
 # Main Logic
+# Try apt installation first on Debian/Ubuntu, fall back to tarball if it fails
+# (e.g., due to Python version requirements - gcloud-cli requires Python 3.9+)
 if command -v apt-get >/dev/null 2>&1; then
-    install_via_apt
+    if install_via_apt; then
+        echo "Successfully installed gcloud via apt."
+    else
+        echo "apt installation failed, falling back to tarball installation..."
+        install_dependencies
+        install_via_tarball
+    fi
 else
     install_dependencies
     install_via_tarball

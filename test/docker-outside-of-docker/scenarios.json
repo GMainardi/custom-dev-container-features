@@ -16,7 +16,34 @@
         }
     },
     "docker-debian": {
-        "image": "debian:latest",
+        "image": "debian:bookworm",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    },
+    "docker-default-arm64": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "platform": "linux/arm64",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    },
+    "docker-alpine-arm64": {
+        "image": "alpine:latest",
+        "platform": "linux/arm64",
+        "features": {
+            "docker-outside-of-docker": {
+                "version": "latest"
+            }
+        }
+    },
+    "docker-debian-arm64": {
+        "image": "debian:bookworm",
+        "platform": "linux/arm64",
         "features": {
             "docker-outside-of-docker": {
                 "version": "latest"
@@ -24,4 +51,3 @@
         }
     }
 }
-

@@ -15,15 +15,7 @@
             }
         }
     },
-    "gcloud-cli-debian-bullseye": {
-        "image": "debian:bullseye",
-        "features": {
-            "gcloud-cli": {
-                "version": "latest"
-            }
-        }
-    },
-     "gcloud-cli-debian-bookworm": {
+    "gcloud-cli-debian-bookworm": {
         "image": "debian:bookworm",
         "features": {
             "gcloud-cli": {
@@ -37,6 +29,33 @@
             "gcloud-cli": {
                 "projectId": "my-test-project",
                 "quotaProjectId": "my-quota-project"
+            }
+        }
+    },
+    "gcloud-cli-default-arm64": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "platform": "linux/arm64",
+        "features": {
+            "gcloud-cli": {
+                "version": "latest"
+            }
+        }
+    },
+    "gcloud-cli-alpine-arm64": {
+        "image": "alpine:latest",
+        "platform": "linux/arm64",
+        "features": {
+            "gcloud-cli": {
+                "version": "latest"
+            }
+        }
+    },
+    "gcloud-cli-debian-bookworm-arm64": {
+        "image": "debian:bookworm",
+        "platform": "linux/arm64",
+        "features": {
+            "gcloud-cli": {
+                "version": "latest"
             }
         }
     }
